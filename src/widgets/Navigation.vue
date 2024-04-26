@@ -1,25 +1,30 @@
 <template>
   <nav class="mb-8">
     <ul class="flex space-x-4">
-      <li v-for="item in menuItems" :key="item.path">
-        <router-link :to="item.path" active-class="text-blue-500">
-          {{ item.label }}
-        </router-link>
+      <li v-for="code in COCKTAIL_CODES" :key="code">
+        <a href="#" @click.prevent="onSelectCocktail(code)" class="mb-5" :class="{ 'text-xl': isActive(code) }">
+          {{ code }}
+        </a>
       </li>
     </ul>
   </nav>
 </template>
 
 <script setup lang="ts">
-interface MenuItem {
-  path: string;
-  label: string;
-}
+import { useRoute } from 'vue-router';
+import { COCKTAIL_CODES } from '@/entities/Cocktail/config';
 
-const menuItems: MenuItem[] = [
-  { path: '/margarita', label: 'Margarita' },
-  { path: '/mojito', label: 'Mojito' },
-  { path: '/a1', label: 'A1' },
-  { path: '/kir', label: 'Kir' },
-];
+const route = useRoute();
+
+const emit = defineEmits<{
+  (e: 'selectCocktail', code: string): void
+}>();
+
+const onSelectCocktail = (code: string) => {
+  emit('selectCocktail', code);
+};
+
+const isActive = (code: string) => {
+  return route.params.cocktailCode === code;
+};
 </script>
