@@ -17,7 +17,7 @@
               </ul>
             </div>
           </div>
-          <img :src="cocktail.strDrinkThumb" :alt="cocktail.strDrink" class="mb-4 md:mb-0 md:mr-8 md:w-1/2">
+          <img :src="cocktail.strDrinkThumb" :alt="cocktail.strDrink" class="mb-4 md:ml-3 md:mb-0 md:mr-8 md:w-1/2 object-cover">
 
         </div>
       </div>
@@ -53,7 +53,7 @@ onMounted(async () => {
 });
 
 const onSelectCocktail = async (code: string) => {
-  await router.push(`/${code}`);
+  await router.push(`/cocktail/${code}`);
   await getCocktails()
 };
 

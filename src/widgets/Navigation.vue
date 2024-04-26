@@ -4,7 +4,7 @@
       <li v-for="code in COCKTAIL_CODES" :key="code">
         <a href="#" @click.prevent="onSelectCocktail(code)"
            :class="{ 'text-blue-500 font-semibold': isActive(code), 'hover:text-blue-400': !isActive(code) }">
-          {{ code }}
+          <router-link :to="'/cocktail/' + code">{{ code }}</router-link>
         </a>
       </li>
     </ul>
