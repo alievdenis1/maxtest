@@ -1,22 +1,29 @@
 <template>
-  <div class="container mx-auto">
+  <div class="container mx-auto py-8">
     <Header />
-    <Navigation @select-cocktail="onSelectCocktail" />
-    <div v-if="cocktail && !cocktailStore.pending">
-      <h1 class="text-4xl font-bold mb-4">{{ cocktail.strDrink }}</h1>
-      <img :src="cocktail.strDrinkThumb" :alt="cocktail.strDrink" class="mb-4">
-      <p class="text-lg mb-8">{{ cocktail.strInstructions }}</p>
-      <div class="mb-4">
-        <h2 class="text-2xl font-bold mb-2">Ingredients:</h2>
-        <ul>
-          <li v-for="(ingredient, index) in cocktailIngredients" :key="index">
-            {{ ingredient }}
-          </li>
-        </ul>
+    <div class="flex flex-col md:flex-row mt-3">
+      <Navigation @select-cocktail="onSelectCocktail" class="md:w-1/4 md:mr-8" />
+      <div v-if="cocktail && !cocktailStore.pending" class="md:w-3/4">
+        <h1 class="text-4xl font-bold mb-4">{{ cocktail.strDrink }}</h1>
+        <div class="flex flex-col md:flex-row">
+          <div>
+            <p class="text-lg mb-8">{{ cocktail.strInstructions }}</p>
+            <div class="mb-4">
+              <h2 class="text-2xl font-bold mb-2">Ingredients:</h2>
+              <ul class="list-disc pl-6">
+                <li v-for="(ingredient, index) in cocktailIngredients" :key="index">
+                  {{ ingredient }}
+                </li>
+              </ul>
+            </div>
+          </div>
+          <img :src="cocktail.strDrinkThumb" :alt="cocktail.strDrink" class="mb-4 md:mb-0 md:mr-8 md:w-1/2">
+
+        </div>
       </div>
-    </div>
-    <div v-if="cocktailStore.pending">
-      <p>Loading cocktail details...</p>
+      <div v-if="cocktailStore.pending" class="text-center md:w-3/4">
+        <p class="text-lg">Loading cocktail details...</p>
+      </div>
     </div>
     <Footer />
   </div>
@@ -35,22 +42,19 @@ const route = useRoute();
 const cocktailStore = useCocktailStore();
 const cocktail = ref<Cocktail | null>(null);
 
-const getCoctails = async () => {
+const getCocktails = async () => {
   const cocktailCode = route.params.cocktailCode as string;
   await cocktailStore.fetchCocktail(cocktailCode);
-
-  console.log(cocktailCode)
   cocktail.value = cocktailStore.getCocktail(cocktailCode);
-  console.log(cocktail.value)
 };
 
 onMounted(async () => {
-  await getCoctails()
+  await getCocktails()
 });
 
-const onSelectCocktail = (code: string) => {
-  getCoctails()
-  router.push(`/${code}`);
+const onSelectCocktail = async (code: string) => {
+  await router.push(`/${code}`);
+  await getCocktails()
 };
 
 function getMeasure(cocktailData: Cocktail, measureKey: StrMeasureKeys): string | null {

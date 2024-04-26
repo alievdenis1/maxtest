@@ -1,8 +1,9 @@
 <template>
-  <nav class="mb-[900px]">
-    <ul class="flex space-x-4">
+  <nav class="mb-8">
+    <ul class="space-y-4">
       <li v-for="code in COCKTAIL_CODES" :key="code">
-        <a href="#" @click.prevent="onSelectCocktail(code)" class="mb-2" :class="{ 'text-xl': isActive(code) }">
+        <a href="#" @click.prevent="onSelectCocktail(code)"
+           :class="{ 'text-blue-500 font-semibold': isActive(code), 'hover:text-blue-400': !isActive(code) }">
           {{ code }}
         </a>
       </li>
